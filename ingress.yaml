@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alb-demo
+  namespace: alb
+  annotations:
+    ingress.alb.yc.io/subnets: e9b4maih9o3annl75gk3
+    ingress.alb.yc.io/security-groups: enp6mt3i8l48d2ir257i
+    ingress.alb.yc.io/external-ipv4-address: 158.160.96.22
+    ingress.alb.yc.io/group-name: default
+spec:
+  rules:
+    - host: ycdocio.ru
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              resource:
+                apiGroup: alb.yc.io
+                kind: HttpBackendGroup
+                name: alb-demo-bg
