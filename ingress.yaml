@@ -10,7 +10,7 @@ metadata:
     ingress.alb.yc.io/group-name: default
 spec:
   rules:
-    - host: <доменное_имя>
+    - host: <домен>
       http:
         paths:
           - pathType: Prefix
