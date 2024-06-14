@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alb-demo-1
-  namespace: alb
+  namespace: yc-alb
   labels:
     app: alb-demo-1
     version: v1
@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: alb-demo-1
-          image: cr.yandex/crpvdms1ovv9loj348n7/example-app1:latest # Запросить с помощью docker images или printenv TEST_IMG
+          image: <название_образа_Docker>
           ports:
             - name: http
               containerPort: 80
@@ -33,7 +33,7 @@ spec:
               containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /health # Путь, по которому проверяется работоспособность приложения.
+              path: /health # Путь, по которому проверяется доступность приложения.
               port: 8080
             initialDelaySeconds: 3
             timeoutSeconds: 2
@@ -43,7 +43,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: alb-demo-1
-  namespace: alb
+  namespace: yc-alb
 spec:
   selector:
     app: alb-demo-1
@@ -58,4 +58,4 @@ spec:
     - name: health
       port: 8080 # Порт сервиса.
       targetPort: 8080 # Порт пода.
-      nodePort: 30081 # Порт, по которому проверяется работоспособность приложения.
+      nodePort: 30081 # Порт, по которому проверяется доступность приложения.
