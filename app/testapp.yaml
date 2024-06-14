@@ -33,7 +33,7 @@ spec:
               containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /health # Путь, по которому проверяется доступность приложения.
+              path: /healthz # Путь, по которому проверяется доступность приложения.
               port: 8080
             initialDelaySeconds: 3
             timeoutSeconds: 2
