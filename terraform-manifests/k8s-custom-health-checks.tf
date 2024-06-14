@@ -3,10 +3,10 @@
 # RU: https://yandex.cloud/ru/docs/managed-kubernetes/tutorials/custom-health-checks
 # EN: https://yandex.cloud/en/docs/managed-kubernetes/tutorials/custom-health-checks
 
-# Set the configuration of Managed Service for Kubernetes cluster and Container Registry
+# Set the configuration of the Managed Service for Kubernetes cluster and Container Registry
 locals {
-  folder_id   = "b1gd2nc1v762oiqsaoeg" # Your cloud folder ID, same as for provider
-  k8s_version = "1.29" # Desired version of Kubernetes. For available versions, see the documentation main page: https://cloud.yandex.com/en/docs/managed-kubernetes/concepts/release-channels-and-updates.
+  folder_id   = "" # Your cloud folder ID, same as for provider
+  k8s_version = "" # Desired version of Kubernetes. For available versions, see the documentation main page: https://cloud.yandex.com/en/docs/managed-kubernetes/concepts/release-channels-and-updates.
 
   # The following settings are predefined. Change them only if necessary.
   network_name              = "k8s-network" # Name of the network
@@ -40,11 +40,11 @@ resource "yandex_vpc_security_group" "k8s-main-sg" {
   network_id  = yandex_vpc_network.k8s-network.id
 
   ingress {
-    description    = "The rule allows availability checks from the load balancer's range of addresses. It is required for the operation of a fault-tolerant cluster and load balancer services."
-    protocol       = "TCP"
+    description       = "The rule allows availability checks from the load balancer's range of addresses. It is required for the operation of a fault-tolerant cluster and load balancer services."
+    protocol          = "TCP"
     predefined_target = "loadbalancer_healthchecks"
-    from_port      = 0
-    to_port        = 65535
+    from_port         = 0
+    to_port           = 65535
   }
 
   ingress {
@@ -142,7 +142,7 @@ resource "yandex_iam_service_account" "k8s-sa" {
 resource "yandex_resourcemanager_folder_iam_binding" "editor" {
   folder_id = local.folder_id
   role      = "editor"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -151,7 +151,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "editor" {
 resource "yandex_resourcemanager_folder_iam_binding" "images-puller" {
   folder_id = local.folder_id
   role      = "container-registry.images.puller"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -160,7 +160,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "images-puller" {
 resource "yandex_resourcemanager_folder_iam_binding" "images-pusher" {
   folder_id = local.folder_id
   role      = "container-registry.images.pusher"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -169,7 +169,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "images-pusher" {
 resource "yandex_resourcemanager_folder_iam_binding" "alb-editor" {
   folder_id = local.folder_id
   role      = "alb.editor"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -178,7 +178,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "alb-editor" {
 resource "yandex_resourcemanager_folder_iam_binding" "vpc-publicAdmin" {
   folder_id = local.folder_id
   role      = "vpc.publicAdmin"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -187,7 +187,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "vpc-publicAdmin" {
 resource "yandex_resourcemanager_folder_iam_binding" "certificate-manager-certificates-downloader" {
   folder_id = local.folder_id
   role      = "certificate-manager.certificates.downloader"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
@@ -196,7 +196,7 @@ resource "yandex_resourcemanager_folder_iam_binding" "certificate-manager-certif
 resource "yandex_resourcemanager_folder_iam_binding" "compute-viewer" {
   folder_id = local.folder_id
   role      = "compute.viewer"
-  members = [
+  members   = [
     "serviceAccount:${yandex_iam_service_account.k8s-sa.id}"
   ]
 }
